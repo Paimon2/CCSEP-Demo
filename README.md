@@ -1,4 +1,4 @@
-# Cars4U Cybersecurity Lab
+# Cars4U vulnerable program - Group 13
 
 ## Overview
 Cars4U is a teaching aid for security testing that ships with two sibling Flask applications:
@@ -64,7 +64,7 @@ The non-vulnerable implementation illustrates the fixes:
 
 Compare `vulnerable/app.py` with `non-vulnerable/app.py` to see each change in context.
 
-## Notes to markers
+## Notes to marker
 - Verify both servers start cleanly, auto-creating `cars.db` in their respective folders.
 - Demonstrate CSRF from `attacker.html` while the vulnerable server runs on port 5000; the hardened server should reject the same flow with a 400.
 - Validate that stored scripts execute on `/buy` in the vulnerable build but render harmlessly in the secure build.
