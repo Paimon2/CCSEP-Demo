@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}Buy — Cars4U{% endblock %}
+{% block content %}
+<body class="buy-page">
+<div class="buy-top">
+  <a href="{{url_for('home')}}" class="brand-link">CARS 4 U</a>
+</div>
+
+<div class="container my-4 buy-page">
+  <h1 class="mb-3">Browse Cars</h1>
+
+  <!-- Search -->
+  <form class="row g-2 mb-4" method="get" action="{{ url_for('buy') }}">
+    <div class="col-md-10">
+      <input class="form-control" type="text" name="q" placeholder="Search make/model/year/price" value="{{ q }}">
+    </div>
+    <div class="col-md-2 d-grid">
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  </form>
+
+  {% if q %}
+    <!-- VULN: Reflected XSS -->
+    <div class="alert alert-info">
+      Showing results for: <strong>{{ q|safe }}</strong>
+    </div>
+  {% endif %}
+
+  <div class="row g-4">
+    <!-- LEFT: catalog list -->
+    <div class="col-lg-6">
+      <div class="catalog-list">
+        {% for r in rows %}
+        {% set slug = (r.make ~ '-' ~ r.model)|lower|replace(' ', '-') %}
+        <button
+          type="button"
+          class="catalog-card"
+          data-id="{{ r.id }}"
+          data-make="{{ r.make|e }}"
+          data-model="{{ r.model|e }}"
+          data-year="{{ r.year }}"
+          data-price="{{ r.price }}"
+          data-description="{{ r.description|e }}"
+          data-img="{{ url_for('static', filename='img/cars/' ~ slug ~ '.jpg') }}"
+        >
+          <div class="meta">
+            <div class="title">{{ r.year }} {{ r.make }} {{ r.model }}</div>
+            <div class="price">${{ r.price }}</div>
+
+            <div class="mt-1 small text-muted">
+              <!-- VULN: Stored XSS -->
+              {{ r.description|safe }}
+            </div>
+          </div>
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- RIGHT: detail panel -->
+    <div class="col-lg-6">
+      <div class="detail-panel">
+        <div class="detail-empty" id="detailEmpty">Select a car to see details →</div>
+
+        <div class="detail-body d-none" id="detailBody">
+          <div class="detail-text">
+            <h2 id="detailTitle" class="mb-1"></h2>
+            <div id="detailPrice" class="h5 text-primary mb-3"></div>
+            <div id="detailDesc" class="text-muted"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Simple master-detail JS -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.catalog-card');
+    const body  = document.getElementById('detailBody');
+    const empty = document.getElementById('detailEmpty');
+    const title = document.getElementById('detailTitle');
+    const price = document.getElementById('detailPrice');
+    const desc  = document.getElementById('detailDesc');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.catalog-card.active').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+
+        const make  = card.dataset.make;
+        const model = card.dataset.model;
+        const year  = card.dataset.year;
+        const p     = card.dataset.price;
+        const d     = card.dataset.description;
+
+        title.textContent = `${year} ${make} ${model}`;
+        price.textContent = `$${p}`;
+
+        // SAFE default (keeps main UI safe). The vulnerable rendering is above in the card list.
+        desc.textContent = d;
+
+        empty.classList.add('d-none');
+        body.classList.remove('d-none');
+      });
+    });
+  });
+</script>
+{% endblock %}

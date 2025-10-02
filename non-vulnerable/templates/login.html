@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Login — Cars4U{% endblock %}
+
+{% block content %}
+<section class="hero-new hero-login py-5">
+  <div class="container-fluid">
+    <div class="hero-top">
+      <div class="brand">CARS 4 U</div>
+      <div class="hero-nav">
+        <a href="{{ url_for('buy') }}" class="btn nav-btn me-2">Browse Cars</a>
+        <a href="{{ url_for('sell') }}" class="btn nav-btn me-2">Sell Cars</a>
+        {% if 'user' in session %}
+          <a href="{{ url_for('logout') }}" class="btn nav-btn">Logout ({{ session['user'] }})</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="card-title mb-3 hero-title-small">Welcome Back</h2>
+        <p class="text-muted mb-4 hero-subtext-small">Sign in to continue browsing and selling cars.</p>
+
+        <form method="post" novalidate>
+          
+          <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+          <div class="mb-3">
+            <label for="user" class="form-label">Username</label>
+            <input id="user" name="user" class="form-control" placeholder="demo" required>
+          </div>
+
+          <div class="d-grid mb-3">
+            <button class="btn btn-primary btn-lg" type="submit">Login</button>
+          </div>
+
+          <div class="text-center">
+            <a href="{{ url_for('home') }}" class="link-primary">Return to home</a>
+          </div>
+        </form>
+
+        <hr>
+
+        <p class="small text-muted mb-0">
+                 After login, we can test CSRF by using an attacker page that posts to <code>/sell</code>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

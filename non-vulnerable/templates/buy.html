@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Buy — Cars4U{% endblock %}
+{% block content %}
+<body class="buy-page">
+  <div class="buy-top">
+    <a href="{{url_for('home')}}" class="brand-link">CARS 4 U</a>
+  </div>
+
+  <div class="container my-4 buy-page">
+    <h1 class="mb-3">Browse Cars</h1>
+
+    <!-- Search -->
+    <form class="row g-2 mb-4" method="get" action="{{ url_for('buy') }}">
+      <div class="col-md-10">
+        <input class="form-control" type="text" name="q" placeholder="Search make/model/year/price" value="{{ q }}">
+      </div>
+      <div class="col-md-2 d-grid">
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+
+    <div class="row g-4">
+      <!-- LEFT: catalog list -->
+      <div class="col-lg-6">
+        <div class="catalog-list">
+          {% for r in rows %}
+          {% set slug = (r.make ~ '-' ~ r.model)|lower|replace(' ', '-') %}
+          <button
+            type="button"
+            class="catalog-card"
+            data-id="{{ r.id }}"
+            data-make="{{ r.make|e }}"
+            data-model="{{ r.model|e }}"
+            data-year="{{ r.year }}"
+            data-price="{{ r.price }}"
+            data-description="{{ r.description|e }}"
+            data-img="{{ url_for('static', filename='img/cars/' ~ slug ~ '.jpg') }}"
+          >
+            <!--img
+              class="thumb"
+              src="{{ url_for('static', filename='img/cars/' ~ slug ~ '.jpg') }}"
+              alt="{{ r.make }} {{ r.model }}"
+              loading="lazy"
+              onerror="this.onerror=null; this.src='/static/img/placeholder-car.jpg';"
+            /-->
+            <div class="meta">
+              <div class="title">{{ r.year }} {{ r.make }} {{ r.model }}</div>
+              <div class="price">${{ r.price }}</div>
+            </div>
+          </button>
+          {% endfor %}
+        </div>
+      </div> 
+
+      <!-- RIGHT: detail panel -->
+      <div class="col-lg-6">
+        <div class="detail-panel">
+          <div class="detail-empty" id="detailEmpty">Select a car to see details →</div>
+
+          <div class="detail-body d-none" id="detailBody">
+            <!--img id="detailImg" class="detail-img"
+                src="{{ url_for('static', filename='img/placeholder-car.jpg') }}" alt="Car"-->
+            <div class="detail-text">
+              <h2 id="detailTitle" class="mb-1"></h2>
+              <div id="detailPrice" class="h5 text-primary mb-3"></div>
+              <div id="detailDesc" class="text-muted"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simple master-detail JS -->
+  <script src="{{url_for('static', filename='buy.js')}}" defer></script>
+</body>
+{% endblock %}

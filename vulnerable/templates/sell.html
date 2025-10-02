@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Sell — Cars4U{% endblock %}
+{% block content %}
+<div class="full-bleed">
+  <div class="sell-page">
+    <!-- Top right Cars 4 U link -->
+    <div class="buy-top">
+      <a href="{{ url_for('home') }}" class="brand-link">CARS 4 U</a>
+    </div>
+
+    <div class="container py-5">
+      <h1 class="sell-title mb-4">Sell Your Car</h1>
+
+      {% if message %}
+        <div class="alert alert-success">{{ message|safe }}</div>
+      {% endif %}
+
+      <form class="row g-3" method="post" action="{{ url_for('sell') }}">
+        <div class="col-md-6">
+          <label class="form-label">Make</label>
+          <input type="text" class="form-control" name="make" placeholder="e.g., Toyota" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Model</label>
+          <input type="text" class="form-control" name="model" placeholder="e.g., Corolla" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Year</label>
+          <input type="number" class="form-control" name="year" placeholder="e.g., 2019" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Price ($)</label>
+          <input type="number" class="form-control" name="price" placeholder="e.g., 17990" required>
+        </div>
+        <div class="col-md-12">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" name="description" rows="4" placeholder="Enter details..."></textarea>
+          <div class="form-text">For demo, HTML here will be stored and rendered on <strong>Buy</strong>.</div>
+        </div>
+        <div class="col-12 d-grid d-md-block">
+          <button class="btn btn-secondary" type="submit">List Car</button>
+          <a class="btn btn-outline-primary ms-md-2" href="{{ url_for('buy') }}">View Inventory</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
